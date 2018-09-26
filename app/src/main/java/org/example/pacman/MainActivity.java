@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         gameView =  findViewById(R.id.gameView);
-        TextView textView = findViewById(R.id.points);
+        final TextView textView = findViewById(R.id.points);
 
 
         game = new Game(this,textView);
@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity
         buttonRight.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 game.movePacmanRight(10);
             }
         });

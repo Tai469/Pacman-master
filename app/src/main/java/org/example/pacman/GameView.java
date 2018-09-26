@@ -58,7 +58,10 @@ public class GameView extends View {
 		//draw the GoldCoins
 		for (int idx = 0; idx < coins.size(); idx++) {
 			GoldCoin coin = coins.get(idx);
-			canvas.drawBitmap(game.getCoinBitmap(), coin.getWidth(), coin.getHeight(), paint);
+			if(!coin.isTaken())
+			{
+				canvas.drawBitmap(game.getCoinBitmap(), coin.getWidth(), coin.getHeight(), paint);
+			}
 		}
 
 		//draw the pacman

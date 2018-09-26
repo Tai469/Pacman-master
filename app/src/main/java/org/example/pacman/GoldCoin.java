@@ -29,8 +29,12 @@ public class GoldCoin {
         return width;
     }
 
-    public boolean getIsTaken() {
+    public boolean isTaken() {
         return isTaken;
+    }
+
+    public void taken(){
+        this.isTaken = true;
     }
 }
 

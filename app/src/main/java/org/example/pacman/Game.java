@@ -93,7 +93,25 @@ public class Game {
     //check each of them for a collision with the pacman
     public void doCollisionCheck()
     {
+        double x1 = this.pacx;
+        double y1 = this.pacy;
 
+        for (int idx = 0; idx < coins.size(); idx++)
+        {
+            if(!coins.get(idx).isTaken()) {
+                double x2 = coins.get(idx).getWidth();
+                double y2 = coins.get(idx).getHeight();
+
+                double distance = Math.hypot(x1 - x2, y1 - y2);
+                //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
+                if (distance < 25) {
+                    coins.get(idx).taken();
+                    this.points = this.points + 1;
+                    this.pointsView.setText("Points: " + this.points);
+                    return;
+                }
+            }
+        }
     }
 
     public int getPacx()
