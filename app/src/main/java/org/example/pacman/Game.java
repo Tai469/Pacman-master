@@ -52,7 +52,8 @@ public class Game {
         {
             return coins;
         }
-        for (int idx = 0; idx < 10; idx++) {
+        for (int idx = 0; idx < 10; idx++)
+        {
             coins.add(new GoldCoin(this.h, this.w, this.coinBitmap.getWidth()));
         }
         return coins;
