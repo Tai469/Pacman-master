@@ -14,12 +14,13 @@ import java.util.ArrayList;
  */
 
 public class Game {
+
     //context is a reference to the activity
     private Context context;
-    private int points = 0; //how points do we have
-
+    //how many points do we have
+    private int points = 0;
     //bitmap of the pacman
-    private Bitmap pacBitmap;
+    private Bitmap pacBitmap, coinBitmap;
     //textview reference to points
     private TextView pointsView;
     private int pacx, pacy;
@@ -29,12 +30,14 @@ public class Game {
     private GameView gameView;
     private int h,w; //height and width of screen
 
+    //constructor
     public Game(Context context, TextView view)
     {
         this.context = context;
         this.pointsView = view;
-        pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
 
+        pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
+        coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.euro);
     }
 
     public void setGameView(GameView view)
@@ -43,6 +46,18 @@ public class Game {
     }
 
     //TODO initialize goldcoins also here
+    public ArrayList<GoldCoin> getGoldCoins()
+    {
+        if(coins.size() > 0)
+        {
+            return coins;
+        }
+        for (int idx = 0; idx < 10; idx++) {
+            coins.add(new GoldCoin(this.h, this.w, this.coinBitmap.getWidth()));
+        }
+        return coins;
+    }
+
     public void newGame()
     {
         pacx = 50;
@@ -94,15 +109,13 @@ public class Game {
         return points;
     }
 
-    public ArrayList<GoldCoin> getCoins()
-    {
-        return coins;
-    }
-
     public Bitmap getPacBitmap()
     {
         return pacBitmap;
     }
 
-
+    public Bitmap getCoinBitmap()
+    {
+        return coinBitmap;
+    }
 }

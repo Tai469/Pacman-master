@@ -9,33 +9,33 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class GameView extends View {
 
 	Game game;
+	ArrayList<GoldCoin> coins = new ArrayList<>();
     int h,w; //used for storing our height and width of the view
-
-	public void setGame(Game game)
-	{
-		this.game = game;
-	}
-
 
 	/* The next 3 constructors are needed for the Android view system,
 	when we have a custom view.
 	 */
 	public GameView(Context context) {
 		super(context);
-
 	}
 
 	public GameView(Context context, AttributeSet attrs) {
 		super(context,attrs);
 	}
 
-
 	public GameView(Context context, AttributeSet attrs, int defStyleAttr)
 	{
 		super(context,attrs,defStyleAttr);
+	}
+
+	public void setGame(Game game)
+	{
+		this.game = game;
 	}
 
 	//In the onDraw we put all our code that should be
@@ -47,14 +47,22 @@ public class GameView extends View {
 		w = canvas.getWidth();
 		//update the size for the canvas to the game.
 		game.setSize(h,w);
+		this.coins = game.getGoldCoins();
+
 		Log.d("GAMEVIEW","h = "+h+", w = "+w);
 		//Making a new paint object
-		Paint paint = new Paint();
+		final Paint paint = new Paint();
 		canvas.drawColor(Color.WHITE); //clear entire canvas to white color
 
-		//draw the pacman
-		canvas.drawBitmap(game.getPacBitmap(), game.getPacx(),game.getPacy(), paint);
 		//TODO loop through the list of goldcoins and draw them.
+		//draw the GoldCoins
+		for (int idx = 0; idx < coins.size(); idx++) {
+			GoldCoin coin = coins.get(idx);
+			canvas.drawBitmap(game.getCoinBitmap(), coin.getWidth(), coin.getHeight(), paint);
+		}
+
+		//draw the pacman
+        canvas.drawBitmap(game.getPacBitmap(), game.getPacx(),game.getPacy(), paint);
 		super.onDraw(canvas);
 	}
 

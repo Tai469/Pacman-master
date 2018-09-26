@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class MainActivity extends AppCompatActivity
 {
     //reference to the main view
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity
         game = new Game(this,textView);
         game.setGameView(gameView);
         gameView.setGame(game);
-
         game.newGame();
 
         Button buttonRight = findViewById(R.id.moveRight);
@@ -46,10 +44,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
