@@ -3,6 +3,7 @@ package org.example.pacman;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.TextView;
 
 
@@ -45,7 +46,7 @@ public class Game {
         this.gameView = view;
     }
 
-    //TODO initialize goldcoins also here
+    //TODO initialize gold coins also here
     public ArrayList<GoldCoin> getGoldCoins()
     {
         if(coins.size() > 0)
@@ -54,7 +55,7 @@ public class Game {
         }
         for (int idx = 0; idx < 10; idx++)
         {
-            coins.add(new GoldCoin(this.h, this.w, this.coinBitmap.getWidth()));
+            coins.add(getCoin());
         }
         return coins;
     }
@@ -118,5 +119,37 @@ public class Game {
     public Bitmap getCoinBitmap()
     {
         return coinBitmap;
+    }
+
+    private GoldCoin getCoin()
+    {
+        while(true)
+        {
+            GoldCoin coin = new GoldCoin(this.h, this.w, this.coinBitmap.getWidth());
+            if(isCoinValid(coin)){
+                return coin;
+            }
+        }
+    }
+
+    private boolean isCoinValid(GoldCoin coin)
+    {
+        for (int idx = 0; idx < coins.size(); idx++)
+        {
+            double x1 = coin.getHeight();
+            double y1 = coin.getWidth();
+
+            double x2 = coins.get(idx).getHeight();
+            double y2 = coins.get(idx).getWidth();
+
+            double distance = Math.hypot(x1-x2, y1-y2);
+            //double tmpDistance = Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
+            //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
+            if(distance < 100)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

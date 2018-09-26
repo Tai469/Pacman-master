@@ -1,6 +1,5 @@
 package org.example.pacman;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -14,7 +13,6 @@ public class GoldCoin {
     private int height, width;
     private boolean isTaken;
     private Random random = new Random();
-    private ArrayList<GoldCoin> coins = new ArrayList<>();
 
     public GoldCoin(int height, int width, int padding)
     {
