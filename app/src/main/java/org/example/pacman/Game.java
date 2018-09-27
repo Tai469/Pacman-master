@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class Game
 {
-public class Game {
 
     //context is a reference to the activity
     private Context context;
@@ -92,7 +91,7 @@ public class Game {
     public void movePacmanLeft(int pixels)
     {
         //still within our boundaries?
-        if (pacx+pixels+pacBitmap.getWidth()<w)
+        if (pacx+pixels+pacBitmap.getWidth()>w)
         {
             pacx = pacx - pixels;
             doCollisionCheck();
@@ -103,7 +102,7 @@ public class Game {
     public void movePacmanUp(int pixels)
     {
         //still within our boundaries?
-        if (pacy+pixels+pacBitmap.getWidth()<h)
+        if (pacy+pixels+pacBitmap.getHeight()>h)
         {
             pacy = pacy - pixels;
             doCollisionCheck();
@@ -114,7 +113,7 @@ public class Game {
     public void movePacmanDown(int pixels)
     {
         //still within our boundaries?
-        if (pacy+pixels+pacBitmap.getWidth()<h)
+        if (pacy+pixels+pacBitmap.getHeight()<h)
         {
             pacy = pacy + pixels;
             doCollisionCheck();
