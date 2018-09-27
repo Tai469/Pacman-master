@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity  implements View.OnClickListener
 {
     //reference to the main view
     GameView gameView;
@@ -38,14 +38,52 @@ public class MainActivity extends AppCompatActivity
 
         Button buttonRight = findViewById(R.id.moveRight);
         //listener of our pacman, when somebody clicks it
-        buttonRight.setOnClickListener(new View.OnClickListener() {
+        buttonRight.setOnClickListener(this);
+//        buttonRight.setOnClickListener(new View.OnClickListener()
+//        {
+//
+//            @Override
+//            public void onClick(View v)
+//            {
+//                game.movePacmanRight(10);
+//            }
+//        });
 
-            @Override
-            public void onClick(View v) {
-                game.movePacmanRight(10);
-            }
-        });
+        Button buttonDown = findViewById(R.id.moveDown);
+        buttonDown.setOnClickListener(this);
+//        buttonRight.setOnClickListener(new View.OnClickListener()
+//        {
+//
+//            @Override
+//            public void onClick(View v)
+//            {
+//                game.movePacmanDown(10);
+//            }
+//        });
 
+        Button buttonUp = findViewById(R.id.moveUp);
+        buttonUp.setOnClickListener(this);
+//        buttonUp.setOnClickListener(new View.OnClickListener()
+//        {
+//
+//            @Override
+//            public void onClick(View v)
+//            {
+//                game.movePacmanUp(10);
+//            }
+//        });
+
+        Button buttonLeft = findViewById(R.id.moveLeft);
+        buttonLeft.setOnClickListener(this);
+//        buttonLeft.setOnClickListener(new View.OnClickListener()
+//        {
+//
+//            @Override
+//            public void onClick(View v)
+//            {
+//                game.movePacmanLeft(10);
+//            }
+//        });
 
     }
 
@@ -66,13 +104,38 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             Toast.makeText(this,"settings clicked",Toast.LENGTH_LONG).show();
             return true;
-        } else if (id == R.id.action_newGame) {
+        }
+        else if (id == R.id.action_newGame)
+        {
             Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+
+        if (view.getId() == R.id.moveLeft)
+        {
+            game.movePacmanLeft(10);
+        }
+        if (view.getId()==R.id.moveRight)
+        {
+            game.movePacmanRight(10);
+        }
+        if (view.getId() == R.id.moveUp)
+        {
+            game.movePacmanUp(10);
+        }
+        if (view.getId() == R.id.moveDown)
+        {
+            game.movePacmanDown(10);
+        }
     }
 }

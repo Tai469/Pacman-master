@@ -9,7 +9,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-public class GameView extends View {
+public class GameView extends View
+{
 
 	Game game;
     int h,w; //used for storing our height and width of the view
@@ -23,7 +24,8 @@ public class GameView extends View {
 	/* The next 3 constructors are needed for the Android view system,
 	when we have a custom view.
 	 */
-	public GameView(Context context) {
+	public GameView(Context context)
+    {
 		super(context);
 
 	}
@@ -41,7 +43,8 @@ public class GameView extends View {
 	//In the onDraw we put all our code that should be
 	//drawn whenever we update the screen.
 	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(Canvas canvas)
+    {
 		//Here we get the height and weight
 		h = canvas.getHeight();
 		w = canvas.getWidth();

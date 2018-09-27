@@ -19,15 +19,41 @@
     <org.example.pacman.GameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
 
     </org.example.pacman.GameView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    tools:context="org.example.pacman.MainActivity" >
 
+    <Button
+        android:id="@+id/moveLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/move_left"/>
+
+    <Button
+        android:id="@+id/moveUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/move_up"/>
+    <Button
+        android:id="@+id/moveDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/move_down"/>
     <Button
         android:id="@+id/moveRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/move_right" />
+        android:text="@string/move_right"
+        />
+</LinearLayout>
+
 
 </LinearLayout>

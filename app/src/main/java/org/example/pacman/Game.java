@@ -13,7 +13,8 @@ import java.util.ArrayList;
  * This class should contain all your game logic
  */
 
-public class Game {
+public class Game
+{
     //context is a reference to the activity
     private Context context;
     private int points = 0; //how points do we have
@@ -62,8 +63,42 @@ public class Game {
     public void movePacmanRight(int pixels)
     {
         //still within our boundaries?
-        if (pacx+pixels+pacBitmap.getWidth()<w) {
+        if (pacx+pixels+pacBitmap.getWidth()<w)
+        {
             pacx = pacx + pixels;
+            doCollisionCheck();
+            gameView.invalidate();
+        }
+    }
+
+    public void movePacmanLeft(int pixels)
+    {
+        //still within our boundaries?
+        if (pacx+pixels+pacBitmap.getWidth()<w)
+        {
+            pacx = pacx - pixels;
+            doCollisionCheck();
+            gameView.invalidate();
+        }
+    }
+
+    public void movePacmanUp(int pixels)
+    {
+        //still within our boundaries?
+        if (pacy+pixels+pacBitmap.getWidth()<h)
+        {
+            pacy = pacy - pixels;
+            doCollisionCheck();
+            gameView.invalidate();
+        }
+    }
+
+    public void movePacmanDown(int pixels)
+    {
+        //still within our boundaries?
+        if (pacy+pixels+pacBitmap.getWidth()<h)
+        {
+            pacy = pacy + pixels;
             doCollisionCheck();
             gameView.invalidate();
         }
