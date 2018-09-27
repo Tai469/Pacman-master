@@ -27,13 +27,12 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         setContentView(R.layout.activity_main);
 
         gameView =  findViewById(R.id.gameView);
-        TextView textView = findViewById(R.id.points);
+        final TextView textView = findViewById(R.id.points);
 
 
         game = new Game(this,textView);
         game.setGameView(gameView);
         gameView.setGame(game);
-
         game.newGame();
 
         Button buttonRight = findViewById(R.id.moveRight);
@@ -86,8 +85,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        });
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

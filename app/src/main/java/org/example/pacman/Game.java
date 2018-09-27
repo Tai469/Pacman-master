@@ -3,6 +3,7 @@ package org.example.pacman;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.TextView;
 
 
@@ -15,12 +16,14 @@ import java.util.ArrayList;
 
 public class Game
 {
+public class Game {
+
     //context is a reference to the activity
     private Context context;
-    private int points = 0; //how points do we have
-
+    //how many points do we have
+    private int points = 0;
     //bitmap of the pacman
-    private Bitmap pacBitmap;
+    private Bitmap pacBitmap, coinBitmap;
     //textview reference to points
     private TextView pointsView;
     private int pacx, pacy;
@@ -30,12 +33,14 @@ public class Game
     private GameView gameView;
     private int h,w; //height and width of screen
 
+    //constructor
     public Game(Context context, TextView view)
     {
         this.context = context;
         this.pointsView = view;
-        pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
 
+        pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
+        coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.euro);
     }
 
     public void setGameView(GameView view)
@@ -43,7 +48,20 @@ public class Game
         this.gameView = view;
     }
 
-    //TODO initialize goldcoins also here
+    //TODO initialize gold coins also here
+    public ArrayList<GoldCoin> getGoldCoins()
+    {
+        if(coins.size() > 0)
+        {
+            return coins;
+        }
+        for (int idx = 0; idx < 10; idx++)
+        {
+            coins.add(getCoin());
+        }
+        return coins;
+    }
+
     public void newGame()
     {
         pacx = 50;
@@ -111,7 +129,25 @@ public class Game
     //check each of them for a collision with the pacman
     public void doCollisionCheck()
     {
+        double x1 = this.pacx;
+        double y1 = this.pacy;
 
+        for (int idx = 0; idx < coins.size(); idx++)
+        {
+            if(!coins.get(idx).isTaken()) {
+                double x2 = coins.get(idx).getWidth();
+                double y2 = coins.get(idx).getHeight();
+
+                double distance = Math.hypot(x1 - x2, y1 - y2);
+                //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
+                if (distance < 25) {
+                    coins.get(idx).taken();
+                    this.points = this.points + 1;
+                    this.pointsView.setText("Points: " + this.points);
+                    return;
+                }
+            }
+        }
     }
 
     public int getPacx()
@@ -129,15 +165,45 @@ public class Game
         return points;
     }
 
-    public ArrayList<GoldCoin> getCoins()
-    {
-        return coins;
-    }
-
     public Bitmap getPacBitmap()
     {
         return pacBitmap;
     }
 
+    public Bitmap getCoinBitmap()
+    {
+        return coinBitmap;
+    }
 
+    private GoldCoin getCoin()
+    {
+        while(true)
+        {
+            GoldCoin coin = new GoldCoin(this.h, this.w, this.coinBitmap.getWidth());
+            if(isCoinValid(coin)){
+                return coin;
+            }
+        }
+    }
+
+    private boolean isCoinValid(GoldCoin coin)
+    {
+        for (int idx = 0; idx < coins.size(); idx++)
+        {
+            double x1 = coin.getHeight();
+            double y1 = coin.getWidth();
+
+            double x2 = coins.get(idx).getHeight();
+            double y2 = coins.get(idx).getWidth();
+
+            double distance = Math.hypot(x1-x2, y1-y2);
+            //double tmpDistance = Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
+            //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
+            if(distance < 100)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
