@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -14,14 +17,12 @@ import java.util.ArrayList;
  * This class should contain all your game logic
  */
 
-public class Game
-{
 public class Game {
 
     //context is a reference to the activity
     private Context context;
     //how many points do we have
-    private int points = 0;
+    private int points = 0, numCoins = 1;
     //bitmap of the pacman
     private Bitmap pacBitmap, coinBitmap;
     //textview reference to points
@@ -55,7 +56,7 @@ public class Game {
         {
             return coins;
         }
-        for (int idx = 0; idx < 10; idx++)
+        for (int idx = 0; idx < numCoins; idx++)
         {
             coins.add(getCoin());
         }
@@ -68,7 +69,7 @@ public class Game {
         pacy = 400; //just some starting coordinates
         //reset the points
         points = 0;
-        pointsView.setText(context.getResources().getString(R.string.points)+" "+points);
+        pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
         gameView.invalidate(); //redraw screen
     }
 
@@ -144,6 +145,11 @@ public class Game {
                     coins.get(idx).taken();
                     this.points = this.points + 1;
                     this.pointsView.setText("Points: " + this.points);
+                    if(isEveryCoinSelected())
+                    {
+                        // TODO: 27/09/2018
+                        Log.d("GameOver", "doCollisionCheck: on Coins taken and it seems to be 10 of 10! So congratulation ....");
+                    }
                     return;
                 }
             }
@@ -204,6 +210,18 @@ public class Game {
                 return false;
             }
         }
+        return true;
+    }
+
+    private boolean isEveryCoinSelected()
+    {
+        for (int idx = 0; idx < coins.size(); idx++) {
+            if(!coins.get(idx).isTaken())
+            {
+                return false;
+            }
+        }
+        Toast.makeText(this.context,"Congratulation You Won !!!",Toast.LENGTH_LONG).show();
         return true;
     }
 }
