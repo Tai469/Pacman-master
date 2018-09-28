@@ -4,11 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import java.util.ArrayList;
 
@@ -17,12 +14,12 @@ import java.util.ArrayList;
  * This class should contain all your game logic
  */
 
-public class Game {
-
+public class Game
+{
     //context is a reference to the activity
     private Context context;
     //how many points do we have
-    private int points = 0, numCoins = 1;
+    private int points = 0, numCoins = 10;
     //bitmap of the pacman
     private Bitmap pacBitmap, coinBitmap;
     //textview reference to points
@@ -93,7 +90,7 @@ public class Game {
     public void movePacmanLeft(int pixels)
     {
         //still within our boundaries?
-        if (pacx+pixels+pacBitmap.getWidth()<w)
+        if (pacx+pixels+pacBitmap.getWidth()>w)
         {
             pacx = pacx - pixels;
             doCollisionCheck();
@@ -104,7 +101,7 @@ public class Game {
     public void movePacmanUp(int pixels)
     {
         //still within our boundaries?
-        if (pacy+pixels+pacBitmap.getWidth()<h)
+        if (pacy+pixels+pacBitmap.getHeight()>h)
         {
             pacy = pacy - pixels;
             doCollisionCheck();
@@ -115,7 +112,7 @@ public class Game {
     public void movePacmanDown(int pixels)
     {
         //still within our boundaries?
-        if (pacy+pixels+pacBitmap.getWidth()<h)
+        if (pacy+pixels+pacBitmap.getHeight()<h)
         {
             pacy = pacy + pixels;
             doCollisionCheck();

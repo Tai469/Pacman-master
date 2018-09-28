@@ -38,51 +38,15 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         Button buttonRight = findViewById(R.id.moveRight);
         //listener of our pacman, when somebody clicks it
         buttonRight.setOnClickListener(this);
-//        buttonRight.setOnClickListener(new View.OnClickListener()
-//        {
-//
-//            @Override
-//            public void onClick(View v)
-//            {
-//                game.movePacmanRight(10);
-//            }
-//        });
 
         Button buttonDown = findViewById(R.id.moveDown);
         buttonDown.setOnClickListener(this);
-//        buttonRight.setOnClickListener(new View.OnClickListener()
-//        {
-//
-//            @Override
-//            public void onClick(View v)
-//            {
-//                game.movePacmanDown(10);
-//            }
-//        });
 
         Button buttonUp = findViewById(R.id.moveUp);
         buttonUp.setOnClickListener(this);
-//        buttonUp.setOnClickListener(new View.OnClickListener()
-//        {
-//
-//            @Override
-//            public void onClick(View v)
-//            {
-//                game.movePacmanUp(10);
-//            }
-//        });
 
         Button buttonLeft = findViewById(R.id.moveLeft);
         buttonLeft.setOnClickListener(this);
-//        buttonLeft.setOnClickListener(new View.OnClickListener()
-//        {
-//
-//            @Override
-//            public void onClick(View v)
-//            {
-//                game.movePacmanLeft(10);
-//            }
-//        });
 
     }
 
