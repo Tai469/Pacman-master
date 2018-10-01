@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         Button buttonLeft = findViewById(R.id.moveLeft);
         buttonLeft.setOnClickListener(this);
 
+        Button buttonNewGame = findViewById((R.id.action_newGame));
+        buttonNewGame.setOnClickListener(this);
+
     }
 
     @Override
@@ -97,6 +100,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         if (view.getId() == R.id.moveDown)
         {
             game.movePacmanDown(10);
+        }
+        if (view.getId() == R.id.action_newGame)
+        {
+            game.newGame();
         }
     }
 }
