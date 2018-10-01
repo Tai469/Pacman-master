@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener
 {
@@ -28,28 +28,26 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         gameView =  findViewById(R.id.gameView);
         final TextView textView = findViewById(R.id.points);
 
-
         game = new Game(this,textView);
         game.setGameView(gameView);
         gameView.setGame(game);
         game.newGame();
 
-        Button buttonRight = findViewById(R.id.moveRight);
-        //listener of our pacman, when somebody clicks it
+        ImageButton buttonRight = findViewById(R.id.moveRight);
+        buttonRight.setImageResource(R.drawable.arrowforward);
         buttonRight.setOnClickListener(this);
 
-        Button buttonDown = findViewById(R.id.moveDown);
+        ImageButton buttonDown = findViewById(R.id.moveDown);
+        buttonDown.setImageResource(R.drawable.arrowdown);
         buttonDown.setOnClickListener(this);
 
-        Button buttonUp = findViewById(R.id.moveUp);
+        ImageButton buttonUp = findViewById(R.id.moveUp);
+        buttonUp.setImageResource(R.drawable.arrowup);
         buttonUp.setOnClickListener(this);
 
-        Button buttonLeft = findViewById(R.id.moveLeft);
+        ImageButton buttonLeft = findViewById(R.id.moveLeft);
+        buttonLeft.setImageResource(R.drawable.arrowback);
         buttonLeft.setOnClickListener(this);
-
-        Button buttonNewGame = findViewById((R.id.action_newGame));
-        buttonNewGame.setOnClickListener(this);
-
     }
 
     @Override
@@ -74,7 +72,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
         else if (id == R.id.action_newGame)
         {
-            Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
+            game.newGame();
+            //Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     @Override
     public void onClick(View view)
     {
-
         if (view.getId() == R.id.moveLeft)
         {
             game.movePacmanLeft(10);
@@ -99,10 +97,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         if (view.getId() == R.id.moveDown)
         {
             game.movePacmanDown(10);
-        }
-        if (view.getId() == R.id.action_newGame)
-        {
-            game.newGame();
         }
     }
 }
