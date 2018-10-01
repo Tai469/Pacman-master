@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 /**
@@ -62,7 +61,7 @@ public class Game
 
     public void newGame()
     {
-        
+        coins.clear();
         pacx = 50;
         pacy = 400; //just some starting coordinates
         //reset the points
@@ -80,7 +79,7 @@ public class Game
     public void movePacmanRight(int pixels)
     {
         //still within our boundaries?
-        if (pacx+pixels+pacBitmap.getWidth()<w)
+        if (pacx + pixels + pacBitmap.getWidth() < w)
         {
             pacx = pacx + pixels;
             doCollisionCheck();
@@ -91,7 +90,7 @@ public class Game
     public void movePacmanLeft(int pixels)
     {
         //still within our boundaries?
-        if (pacx+pixels+pacBitmap.getWidth()<h && pacx + pixels>=0)
+        if (pacx + pixels + pacBitmap.getWidth() < h && pacx + pixels >= 0)
         {
             pacx = pacx - pixels;
             if (pacx <0)
@@ -106,7 +105,7 @@ public class Game
     public void movePacmanUp(int pixels)
     {
         //still within our boundaries?
-        if (pacy+pixels+pacBitmap.getHeight()<h && pacy+pixels>=0)
+        if (pacy + pixels + pacBitmap.getHeight() < h && pacy + pixels >= 0)
         {
             pacy = pacy - pixels;
             if (pacy <0)
@@ -121,7 +120,7 @@ public class Game
     public void movePacmanDown(int pixels)
     {
         //still within our boundaries?
-        if (pacy+pixels+pacBitmap.getHeight()<h)
+        if (pacy + pixels + pacBitmap.getHeight() < h)
         {
             pacy = pacy + pixels;
             doCollisionCheck();
@@ -148,7 +147,7 @@ public class Game
 
                 double distance = Math.hypot(x1 - x2, y1 - y2);
                 //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
-                if (distance < 25)
+                if (distance < 50)
                 {
                     coins.get(idx).taken();
                     this.points = this.points + 1;

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener
 {
     //reference to the main view
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         {
             game.movePacmanLeft(10);
         }
-        if (view.getId()==R.id.moveRight)
+        if (view.getId() == R.id.moveRight)
         {
             game.movePacmanRight(10);
         }
