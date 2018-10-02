@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ImageButton;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener
 {
@@ -16,6 +20,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     GameView gameView;
     //reference to the game class.
     Game game;
+
+    private Timer timer;
+    private int counter = 0;
+    private int timeCounter = 0;
+    private boolean left = false;
+    private boolean right = false;
+    private boolean up = false;
+    private boolean down = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,22 +45,66 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         gameView.setGame(game);
         game.newGame();
 
-        ImageButton buttonRight = findViewById(R.id.moveRight);
-        buttonRight.setImageResource(R.drawable.arrowforward);
+        Button buttonRight = findViewById(R.id.moveRight);
+        //listener of our pacman, when somebody clicks it
         buttonRight.setOnClickListener(this);
 
-        ImageButton buttonDown = findViewById(R.id.moveDown);
-        buttonDown.setImageResource(R.drawable.arrowdown);
+        Button buttonDown = findViewById(R.id.moveDown);
         buttonDown.setOnClickListener(this);
 
-        ImageButton buttonUp = findViewById(R.id.moveUp);
-        buttonUp.setImageResource(R.drawable.arrowup);
+        Button buttonUp = findViewById(R.id.moveUp);
         buttonUp.setOnClickListener(this);
 
-        ImageButton buttonLeft = findViewById(R.id.moveLeft);
-        buttonLeft.setImageResource(R.drawable.arrowback);
+        Button buttonLeft = findViewById(R.id.moveLeft);
         buttonLeft.setOnClickListener(this);
+
+        Button buttonNewGame = findViewById((R.id.action_newGame));
+        buttonNewGame.setOnClickListener(this);
+        game.running = true;
+
+        timer = new Timer();
+
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                Timermethod();
+            }
+        },0,40);
     }
+
+    private  void Timermethod()
+    {
+        this.runOnUiThread(Timer_tick);
+    }
+
+    private Runnable Timer_tick = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            if (game.running)
+            {
+                if (left)
+                {
+                    game.movePacmanLeft(10);
+                }
+                else if (right)
+                {
+                    game.movePacmanRight(10);
+                }
+                else if (up)
+                {
+                    game.movePacmanUp(10);
+                }
+                else  if (down)
+                {
+                    game.movePacmanDown(10);
+                }
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -72,8 +128,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
         else if (id == R.id.action_newGame)
         {
-            game.newGame();
-            //Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -84,19 +139,39 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     {
         if (view.getId() == R.id.moveLeft)
         {
-            game.movePacmanLeft(10);
+            right = false;
+            up = false;
+            down = false;
+            left = true;
         }
-        if (view.getId() == R.id.moveRight)
+        if (view.getId()==R.id.moveRight)
         {
-            game.movePacmanRight(10);
+            left = false;
+            up = false;
+            down = false;
+            right = true;
         }
         if (view.getId() == R.id.moveUp)
         {
-            game.movePacmanUp(10);
+            left = false;
+            right = false;
+            down = false;
+            up = true;
         }
         if (view.getId() == R.id.moveDown)
         {
-            game.movePacmanDown(10);
+            left = false;
+            right = false;
+            up = false;
+            down = true;
+        }
+        if (view.getId() == R.id.action_newGame)
+        {
+            left = false;
+            right = false;
+            up = false;
+            down = false;
+            game.newGame();
         }
     }
 }

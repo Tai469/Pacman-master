@@ -5,7 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
+
+
 import java.util.ArrayList;
 
 /**
@@ -15,10 +16,11 @@ import java.util.ArrayList;
 
 public class Game
 {
+
     //context is a reference to the activity
     private Context context;
     //how many points do we have
-    private int points = 0, numCoins = 10;
+    private int points = 0;
     //bitmap of the pacman
     private Bitmap pacBitmap, coinBitmap;
     //textview reference to points
@@ -29,6 +31,7 @@ public class Game
     //a reference to the gameview
     private GameView gameView;
     private int h,w; //height and width of screen
+    public boolean running;
 
     //constructor
     public Game(Context context, TextView view)
@@ -52,7 +55,7 @@ public class Game
         {
             return coins;
         }
-        for (int idx = 0; idx < numCoins; idx++)
+        for (int idx = 0; idx < 10; idx++)
         {
             coins.add(getCoin());
         }
@@ -61,12 +64,12 @@ public class Game
 
     public void newGame()
     {
-        coins.clear();
+        
         pacx = 50;
         pacy = 400; //just some starting coordinates
         //reset the points
         points = 0;
-        pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
+        pointsView.setText(context.getResources().getString(R.string.points)+" "+points);
         gameView.invalidate(); //redraw screen
     }
 
@@ -79,7 +82,7 @@ public class Game
     public void movePacmanRight(int pixels)
     {
         //still within our boundaries?
-        if (pacx + pixels + pacBitmap.getWidth() < w)
+        if (pacx+pixels+pacBitmap.getWidth()<w)
         {
             pacx = pacx + pixels;
             doCollisionCheck();
@@ -90,7 +93,7 @@ public class Game
     public void movePacmanLeft(int pixels)
     {
         //still within our boundaries?
-        if (pacx + pixels + pacBitmap.getWidth() < h && pacx + pixels >= 0)
+        if (pacx+pixels+pacBitmap.getWidth()<h && pacx + pixels>=0)
         {
             pacx = pacx - pixels;
             if (pacx <0)
@@ -105,7 +108,7 @@ public class Game
     public void movePacmanUp(int pixels)
     {
         //still within our boundaries?
-        if (pacy + pixels + pacBitmap.getHeight() < h && pacy + pixels >= 0)
+        if (pacy+pixels+pacBitmap.getHeight()<h && pacy+pixels>=0)
         {
             pacy = pacy - pixels;
             if (pacy <0)
@@ -120,7 +123,7 @@ public class Game
     public void movePacmanDown(int pixels)
     {
         //still within our boundaries?
-        if (pacy + pixels + pacBitmap.getHeight() < h)
+        if (pacy+pixels+pacBitmap.getHeight()<h)
         {
             pacy = pacy + pixels;
             doCollisionCheck();
@@ -147,16 +150,11 @@ public class Game
 
                 double distance = Math.hypot(x1 - x2, y1 - y2);
                 //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
-                if (distance < 50)
+                if (distance < 25)
                 {
                     coins.get(idx).taken();
                     this.points = this.points + 1;
                     this.pointsView.setText("Points: " + this.points);
-                    if(isEveryCoinSelected())
-                    {
-                        // TODO: 27/09/2018
-                        Log.d("GameOver", "doCollisionCheck: on Coins taken and it seems to be 10 of 10! So congratulation ....");
-                    }
                     return;
                 }
             }
@@ -218,18 +216,6 @@ public class Game
                 return false;
             }
         }
-        return true;
-    }
-
-    private boolean isEveryCoinSelected()
-    {
-        for (int idx = 0; idx < coins.size(); idx++) {
-            if(!coins.get(idx).isTaken())
-            {
-                return false;
-            }
-        }
-        Toast.makeText(this.context,"Congratulation You Won !!!",Toast.LENGTH_LONG).show();
         return true;
     }
 }
