@@ -74,6 +74,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         },0,40);
     }
 
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        timer.cancel();
+    }
+
     private  void Timermethod()
     {
         this.runOnUiThread(Timer_tick);
@@ -128,6 +136,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
         else if (id == R.id.action_newGame)
         {
+            left = false;
+            right = false;
+            up = false;
+            down = false;
             Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
             return true;
         }
@@ -164,14 +176,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             right = false;
             up = false;
             down = true;
-        }
-        if (view.getId() == R.id.action_newGame)
-        {
-            left = false;
-            right = false;
-            up = false;
-            down = false;
-            game.newGame();
         }
     }
 }
