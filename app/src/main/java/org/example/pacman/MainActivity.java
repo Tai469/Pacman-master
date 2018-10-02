@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener
 {
@@ -16,6 +18,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     GameView gameView;
     //reference to the game class.
     Game game;
+    //game automatisation
+    private Timer timer;
+    private boolean left, right, up, down;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,7 +53,51 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         ImageButton buttonLeft = findViewById(R.id.moveLeft);
         buttonLeft.setImageResource(R.drawable.arrowback);
         buttonLeft.setOnClickListener(this);
+
+        game.isRunning = true;
+
+        timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                Timermethod();
+            }
+        },0,40);
     }
+
+    private  void Timermethod()
+    {
+        this.runOnUiThread(Timer_tick);
+    }
+
+    private Runnable Timer_tick = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            if (game.isRunning)
+            {
+                if (left)
+                {
+                    game.movePacmanLeft(10);
+                }
+                else if (right)
+                {
+                    game.movePacmanRight(10);
+                }
+                else if (up)
+                {
+                    game.movePacmanUp(10);
+                }
+                else  if (down)
+                {
+                    game.movePacmanDown(10);
+                }
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -82,21 +131,26 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     @Override
     public void onClick(View view)
     {
+        this.left = false;
+        this.right = false;
+        this.up = false;
+        this.down = false;
+
         if (view.getId() == R.id.moveLeft)
         {
-            game.movePacmanLeft(10);
+            this.left = true;
         }
         if (view.getId() == R.id.moveRight)
         {
-            game.movePacmanRight(10);
+            this.right = true;
         }
         if (view.getId() == R.id.moveUp)
         {
-            game.movePacmanUp(10);
+            this.up = true;
         }
         if (view.getId() == R.id.moveDown)
         {
-            game.movePacmanDown(10);
+            this.down = true;
         }
     }
 }
