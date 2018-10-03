@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     GameView gameView;
     //reference to the game class.
     Game game;
-    //game automatisation
     private Timer timer;
     private boolean left, right, up, down;
 
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         game.isRunning = true;
 
         timer = new Timer();
+
         timer.schedule(new TimerTask()
         {
             @Override
@@ -65,6 +65,22 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 Timermethod();
             }
         },0,40);
+
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run() {
+                game.MoveEnemies();
+            }
+        }, 100, 50);
+
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run() {
+                game.DirectEnemies();
+            }
+        }, 0, 400);
     }
 
     private  void Timermethod()

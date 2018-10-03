@@ -7,6 +7,7 @@ public class Enemy
     int posH, posW;
     boolean isActive;
     Bitmap bitmap;
+    int direction = -1;
 
     public Enemy(int screenH, int screenW, Bitmap bitmap)
     {
@@ -31,5 +32,23 @@ public class Enemy
     public Bitmap getBitmap()
     {
         return this.bitmap;
+    }
+
+    public void setHeight(int height)
+    {
+        this.posH = height;
+    }
+
+    public void setWidth(int width)
+    {
+        this.posW = width;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }

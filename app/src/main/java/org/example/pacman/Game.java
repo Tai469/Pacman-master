@@ -19,7 +19,7 @@ public class Game
     //context is a reference to the activity
     private Context context;
     //how many points do we have
-    private int points = 0, numCoins = 10, numEnemies = 1;
+    private int points = 0, numCoins = 10, numEnemies = 5;
     //bitmap of the pacman
     private Bitmap pacBitmap, coinBitmap, emenyBlueBitmap, enemyPinkBitmap, enemyRedBitmap, enemyYellowBitmap;
     //textview reference to points
@@ -141,6 +141,48 @@ public class Game
         }
     }
 
+    public void MoveEnemies()
+    {
+        for (int idx = 0; idx < this.getEnemies().size(); idx++) {
+            Enemy enemy = this.getEnemies().get(idx);
+            switch (enemy.getDirection())
+            {
+                case 0: //up
+                    if(enemy.getHeight() - 10 - enemy.getBitmap().getHeight() > 10)
+                    {
+                        enemy.setHeight(enemy.getHeight() - 10);
+                    }
+                    break;
+                case 1: //down
+                    if(enemy.getHeight() + 10 + enemy.getBitmap().getHeight() < h)
+                    {
+                        enemy.setHeight(enemy.getHeight() + 10);
+                    }
+                    break;
+                case 2: //left
+                    if(enemy.getWidth() - 10 - enemy.getBitmap().getWidth() > 0)
+                    {
+                        enemy.setWidth(enemy.getWidth() - 10);
+                    }
+                    break;
+                default: //right
+                    if(enemy.getWidth() + 10 + enemy.getBitmap().getWidth() < w)
+                    {
+                        enemy.setWidth(enemy.getWidth() + 10);
+                    }
+                    break;
+            }
+        }
+        this.gameView.invalidate();
+    }
+
+    public void DirectEnemies()
+    {
+        for (int idx = 0; idx < this.getEnemies().size(); idx++) {
+            this.getEnemies().get(idx).setDirection(new Random().nextInt(4));
+        }
+    }
+
     public void doCollisionCheck()
     {
         double x1 = this.pacx;
@@ -239,7 +281,7 @@ public class Game
     private Enemy getEnemy()
     {
         Bitmap bitmap;
-        switch (new Random().nextInt(3))
+        switch (new Random().nextInt(4))
         {
             case 0:
                 bitmap = this.emenyBlueBitmap;
