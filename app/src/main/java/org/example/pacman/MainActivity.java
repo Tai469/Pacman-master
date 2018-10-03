@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ImageButton;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,7 +17,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     GameView gameView;
     //reference to the game class.
     Game game;
-    //game automatisation
     private Timer timer;
     private boolean left, right, up, down;
 
@@ -30,13 +28,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-        gameView =  findViewById(R.id.gameView);
+        this.gameView =  findViewById(R.id.gameView);
         final TextView textView = findViewById(R.id.points);
 
-        game = new Game(this,textView);
-        game.setGameView(gameView);
-        gameView.setGame(game);
-        game.newGame();
+        this.game = new Game(this,textView);
+        this.game.setGameView(gameView);
+        this.gameView.setGame(game);
+        this.game.newGame();
 
         ImageButton buttonRight = findViewById(R.id.moveRight);
         buttonRight.setImageResource(R.drawable.arrowforward);
@@ -53,8 +51,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         ImageButton buttonLeft = findViewById(R.id.moveLeft);
         buttonLeft.setImageResource(R.drawable.arrowback);
         buttonLeft.setOnClickListener(this);
-
-        game.isRunning = true;
 
         timer = new Timer();
         timer.schedule(new TimerTask()
@@ -116,17 +112,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            Toast.makeText(this,"settings clicked",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"settings clicked",Toast.LENGTH_LONG).show();
             return true;
         }
         else if (id == R.id.action_newGame)
         {
-            right = false;
-            left = false;
-            up = false;
-            down = false;
-            game.newGame();
             //Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
+            game.newGame();
             return true;
         }
         return super.onOptionsItemSelected(item);

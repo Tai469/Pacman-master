@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 public class GameView extends View
 {
-
 	Game game;
 	ArrayList<GoldCoin> coins = new ArrayList<>();
+	ArrayList<Enemy> enemies = new ArrayList<>();
     int h,w; //used for storing our height and width of the view
 
 	/* The next 3 constructors are needed for the Android view system,
@@ -52,6 +52,7 @@ public class GameView extends View
 		//update the size for the canvas to the game.
 		game.setSize(h,w);
 		this.coins = game.getGoldCoins();
+		this.enemies = game.getEnemies();
 
 		Log.d("GAMEVIEW","h = "+h+", w = "+w);
 		//Making a new paint object
@@ -64,7 +65,15 @@ public class GameView extends View
 			GoldCoin coin = coins.get(idx);
 			if(!coin.isTaken())
 			{
-				canvas.drawBitmap(game.getCoinBitmap(), coin.getWidth(), coin.getHeight(), paint);
+				canvas.drawBitmap(coin.getBitmap(), coin.getWidth(), coin.getHeight(), paint);
+			}
+		}
+
+		for (int idx = 0; idx < this.enemies.size(); idx++) {
+			Enemy enemy = enemies.get(idx);
+			if(enemy.isActive)
+			{
+				canvas.drawBitmap(enemy.bitmap, enemy.getWidth(), enemy.getHeight(), paint);
 			}
 		}
 

@@ -3,10 +3,9 @@ package org.example.pacman;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -18,9 +17,9 @@ public class Game
     //context is a reference to the activity
     private Context context;
     //how many points do we have
-    private int points = 0, numCoins = 10, numEnemies = 1;
+    private int points = 0, numCoins = 10, numEnemies = 5;
     //bitmap of the pacman
-    private Bitmap pacBitmap, coinBitmap, enemyRedBitmap, enemyPinkBitmap, emenyBlueBitman, enemyYellowBitmap;
+    private Bitmap pacBitmap, coinBitmap, emenyBlueBitmap, enemyPinkBitmap, enemyRedBitmap, enemyYellowBitmap;
     //textview reference to points
     private TextView pointsView;
     private int pacx, pacy;
@@ -42,6 +41,10 @@ public class Game
 
         pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
         coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.euro);
+        enemyRedBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman1);
+        enemyPinkBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman2);
+        emenyBlueBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman3);
+        enemyYellowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman4);
     }
 
     public void setGameView(GameView view)
@@ -77,13 +80,19 @@ public class Game
 
     public void newGame()
     {
-        coins.clear();
-        pacx = 50;
-        pacy = 400; //just some starting coordinates
+        this.coins.clear();
+        this.enemies.clear();
+
+        this.pacx = 50;
+        this.pacy = 400; //just some starting coordinates
         //reset the points
-        points = 0;
-        pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
-        gameView.invalidate(); //redraw screen
+        this.points = 0;
+        this.pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
+        //this.gameView.invalidate(); //redraw screen
+
+        this.isRunning = true;
+        new AsyncMoveEnemies().execute(this);
+        this.gameView.invalidate(); //redraw screen
     }
 
     public void setSize(int h, int w)
@@ -136,6 +145,49 @@ public class Game
         }
     }
 
+    public void MoveEnemies()
+    {
+        for (int idx = 0; idx < this.getEnemies().size(); idx++) {
+            Enemy enemy = this.getEnemies().get(idx);
+            switch (enemy.getDirection())
+            {
+                case 0: //up
+                    if(enemy.getHeight() - 10 - enemy.getBitmap().getHeight() > 10)
+                    {
+                        enemy.setHeight(enemy.getHeight() - 10);
+                    }
+                    break;
+                case 1: //down
+                    if(enemy.getHeight() + 10 + enemy.getBitmap().getHeight() < h)
+                    {
+                        enemy.setHeight(enemy.getHeight() + 10);
+                    }
+                    break;
+                case 2: //left
+                    if(enemy.getWidth() - 10 - enemy.getBitmap().getWidth() > 0)
+                    {
+                        enemy.setWidth(enemy.getWidth() - 10);
+                    }
+                    break;
+                default: //right
+                    if(enemy.getWidth() + 10 + enemy.getBitmap().getWidth() < w)
+                    {
+                        enemy.setWidth(enemy.getWidth() + 10);
+                    }
+                    break;
+            }
+        }
+        this.gameView.invalidate();
+        this.isKilled();
+    }
+
+    public void DirectEnemies()
+    {
+        for (int idx = 0; idx < this.getEnemies().size(); idx++) {
+            this.getEnemies().get(idx).setDirection(new Random().nextInt(4));
+        }
+    }
+
     public void doCollisionCheck()
     {
         double x1 = this.pacx;
@@ -149,7 +201,6 @@ public class Game
                 double y2 = coins.get(idx).getHeight();
 
                 double distance = Math.hypot(x1 - x2, y1 - y2);
-                //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
                 if (distance < 50)
                 {
                     coins.get(idx).taken();
@@ -157,8 +208,7 @@ public class Game
                     this.pointsView.setText("Points: " + this.points);
                     if(isEveryCoinSelected())
                     {
-                        // TODO: 27/09/2018
-                        Log.d("GameOver", "doCollisionCheck: on Coins taken and it seems to be 10 of 10! So congratulation ....");
+                        this.isRunning = false;
                     }
                     return;
                 }
@@ -186,16 +236,11 @@ public class Game
         return pacBitmap;
     }
 
-    public Bitmap getCoinBitmap()
-    {
-        return coinBitmap;
-    }
-
     private GoldCoin getCoin()
     {
         while(true)
         {
-            GoldCoin coin = new GoldCoin(this.h, this.w, this.coinBitmap.getWidth());
+            GoldCoin coin = new GoldCoin(this.h, this.w, this.coinBitmap.getWidth(), coinBitmap);
             if(isCoinValid(coin))
             {
                 return coin;
@@ -232,12 +277,50 @@ public class Game
                 return false;
             }
         }
-        Toast.makeText(this.context,"Congratulation You Won !!!",Toast.LENGTH_LONG).show();
         return true;
     }
 
     private Enemy getEnemy()
     {
-        return new Enemy(h, w);
+        Bitmap bitmap;
+        switch (new Random().nextInt(4))
+        {
+            case 0:
+                bitmap = this.emenyBlueBitmap;
+                break;
+            case 1:
+                bitmap = this.enemyPinkBitmap;
+                break;
+            case 2:
+                bitmap = this.enemyRedBitmap;
+                break;
+            default:
+                bitmap = this.enemyYellowBitmap;
+                break;
+        }
+        return new Enemy(h, w, bitmap);
+    }
+
+    public void isKilled()
+    {
+        double x1 = pacx;
+        double y1 = pacy;
+
+        for (int idx = 0; idx < enemies.size(); idx++) {
+
+            Enemy enemy = enemies.get(idx);
+            if(enemy.isActive)
+            {
+                double x2 = enemy.getHeight();
+                double y2 = enemy.getWidth();
+
+                double distance = Math.hypot(x1 - x2, y1 - y2);
+                if(distance < 50)
+                {
+                    isRunning = false;
+                    return;
+                }
+            }
+        }
     }
 }
