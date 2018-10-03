@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
         else if (id == R.id.action_newGame)
         {
+            right = false;
+            left = false;
+            up = false;
+            down = false;
             game.newGame();
             //Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
             return true;
