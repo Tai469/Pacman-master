@@ -83,6 +83,7 @@ public class Game
     public void newGame()
     {
         coins.clear();
+        enemies.clear();
         pacx = 50;
         pacy = 400; //just some starting coordinates
         //reset the points
