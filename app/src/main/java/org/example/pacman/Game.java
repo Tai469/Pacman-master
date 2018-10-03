@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Game
     //how many points do we have
     private int points = 0, numCoins = 10, numEnemies = 1;
     //bitmap of the pacman
-    private Bitmap pacBitmap, coinBitmap, enemyRedBitmap, enemyPinkBitmap, emenyBlueBitman, enemyYellowBitmap;
+    private Bitmap pacBitmap, coinBitmap, emenyBlueBitmap, enemyPinkBitmap, enemyRedBitmap, enemyYellowBitmap;
     //textview reference to points
     private TextView pointsView;
     private int pacx, pacy;
@@ -42,6 +43,10 @@ public class Game
 
         pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
         coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.euro);
+        enemyRedBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman1);
+        enemyPinkBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman2);
+        emenyBlueBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman3);
+        enemyYellowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman4);
     }
 
     public void setGameView(GameView view)
@@ -186,16 +191,11 @@ public class Game
         return pacBitmap;
     }
 
-    public Bitmap getCoinBitmap()
-    {
-        return coinBitmap;
-    }
-
     private GoldCoin getCoin()
     {
         while(true)
         {
-            GoldCoin coin = new GoldCoin(this.h, this.w, this.coinBitmap.getWidth());
+            GoldCoin coin = new GoldCoin(this.h, this.w, this.coinBitmap.getWidth(), coinBitmap);
             if(isCoinValid(coin))
             {
                 return coin;
@@ -238,6 +238,22 @@ public class Game
 
     private Enemy getEnemy()
     {
-        return new Enemy(h, w);
+        Bitmap bitmap;
+        switch (new Random().nextInt(3))
+        {
+            case 0:
+                bitmap = this.emenyBlueBitmap;
+                break;
+            case 1:
+                bitmap = this.enemyPinkBitmap;
+                break;
+            case 2:
+                bitmap = this.enemyRedBitmap;
+                break;
+            default:
+                bitmap = this.enemyYellowBitmap;
+                break;
+        }
+        return new Enemy(h, w, bitmap);
     }
 }
