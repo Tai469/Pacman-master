@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ImageButton;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,13 +28,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-        gameView =  findViewById(R.id.gameView);
+        this.gameView =  findViewById(R.id.gameView);
         final TextView textView = findViewById(R.id.points);
 
-        game = new Game(this,textView);
-        game.setGameView(gameView);
-        gameView.setGame(game);
-        game.newGame();
+        this.game = new Game(this,textView);
+        this.game.setGameView(gameView);
+        this.gameView.setGame(game);
+        this.game.newGame();
 
         ImageButton buttonRight = findViewById(R.id.moveRight);
         buttonRight.setImageResource(R.drawable.arrowforward);
@@ -53,10 +52,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         buttonLeft.setImageResource(R.drawable.arrowback);
         buttonLeft.setOnClickListener(this);
 
-        game.isRunning = true;
-
         timer = new Timer();
-
         timer.schedule(new TimerTask()
         {
             @Override
@@ -65,22 +61,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 Timermethod();
             }
         },0,40);
-
-        timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run() {
-                game.MoveEnemies();
-            }
-        }, 100, 50);
-
-        timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run() {
-                game.DirectEnemies();
-            }
-        }, 0, 400);
     }
 
     private  void Timermethod()
@@ -132,13 +112,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            Toast.makeText(this,"settings clicked",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"settings clicked",Toast.LENGTH_LONG).show();
             return true;
         }
         else if (id == R.id.action_newGame)
         {
-            game.newGame();
             //Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
+            game.newGame();
             return true;
         }
         return super.onOptionsItemSelected(item);

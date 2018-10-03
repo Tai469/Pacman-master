@@ -3,9 +3,7 @@ package org.example.pacman;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -82,14 +80,19 @@ public class Game
 
     public void newGame()
     {
-        coins.clear();
-        enemies.clear();
-        pacx = 50;
-        pacy = 400; //just some starting coordinates
+        this.coins.clear();
+        this.enemies.clear();
+
+        this.pacx = 50;
+        this.pacy = 400; //just some starting coordinates
         //reset the points
-        points = 0;
-        pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
-        gameView.invalidate(); //redraw screen
+        this.points = 0;
+        this.pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
+        //this.gameView.invalidate(); //redraw screen
+
+        this.isRunning = true;
+        new AsyncMoveEnemies().execute(this);
+        this.gameView.invalidate(); //redraw screen
     }
 
     public void setSize(int h, int w)
@@ -175,6 +178,7 @@ public class Game
             }
         }
         this.gameView.invalidate();
+        this.isKilled();
     }
 
     public void DirectEnemies()
@@ -197,7 +201,6 @@ public class Game
                 double y2 = coins.get(idx).getHeight();
 
                 double distance = Math.hypot(x1 - x2, y1 - y2);
-                //Log.d("Distance", "The distance is : " + distance + " against coin [" + idx + "]");
                 if (distance < 50)
                 {
                     coins.get(idx).taken();
@@ -205,8 +208,7 @@ public class Game
                     this.pointsView.setText("Points: " + this.points);
                     if(isEveryCoinSelected())
                     {
-                        // TODO: 27/09/2018
-                        Log.d("GameOver", "doCollisionCheck: on Coins taken and it seems to be 10 of 10! So congratulation ....");
+                        this.isRunning = false;
                     }
                     return;
                 }
@@ -275,7 +277,6 @@ public class Game
                 return false;
             }
         }
-        Toast.makeText(this.context,"Congratulation You Won !!!",Toast.LENGTH_LONG).show();
         return true;
     }
 
@@ -298,5 +299,28 @@ public class Game
                 break;
         }
         return new Enemy(h, w, bitmap);
+    }
+
+    public void isKilled()
+    {
+        double x1 = pacx;
+        double y1 = pacy;
+
+        for (int idx = 0; idx < enemies.size(); idx++) {
+
+            Enemy enemy = enemies.get(idx);
+            if(enemy.isActive)
+            {
+                double x2 = enemy.getHeight();
+                double y2 = enemy.getWidth();
+
+                double distance = Math.hypot(x1 - x2, y1 - y2);
+                if(distance < 50)
+                {
+                    isRunning = false;
+                    return;
+                }
+            }
+        }
     }
 }
