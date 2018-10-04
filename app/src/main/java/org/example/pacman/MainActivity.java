@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         final TextView viewPoints = findViewById(R.id.points);
         final TextView viewLooser = findViewById(R.id.Looser);
         final TextView viewWinner = findViewById(R.id.Winner);
+        final TextView viewGameTimeCounter = findViewById(R.id.gameTimeCounter);
 
-        this.game = new Game(this, viewPoints, viewLooser, viewWinner);
+        this.game = new Game(this, viewPoints, viewLooser, viewWinner, viewGameTimeCounter);
         this.game.setGameView(gameView);
         this.gameView.setGame(game);
         this.game.newGame();

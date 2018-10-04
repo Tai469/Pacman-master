@@ -7,19 +7,38 @@
 
     <!-- Notice how the custom view is referenced here with
     a full package path-->
-    <TextView
-        android:id="@+id/points"
-        android:layout_width="wrap_content"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/points"
-        android:textSize="24sp" />
+        android:layout_gravity="fill_horizontal"
+        android:orientation="horizontal"
+        tools:context="org.example.pacman.MainActivity">
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/points"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/gameTimeCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/gameTimeCounter"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
     <org.example.pacman.GameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-
     </org.example.pacman.GameView>
 
     <TextView
@@ -28,6 +47,7 @@
         android:layout_width="wrap_content"
         android:gravity="center_horizontal"
         android:text="You are a Winner !!!"
+        android:textSize="0dp"
         android:visibility="invisible"/>
 
     <TextView
@@ -36,6 +56,7 @@
         android:layout_width="wrap_content"
         android:gravity="center_horizontal"
         android:text="You Loose !!!"
+        android:textSize="0dp"
         android:visibility="invisible"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

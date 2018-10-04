@@ -52,7 +52,7 @@ public class GameView extends View
 		this.coins = game.getGoldCoins();
 		this.enemies = game.getEnemies();
 
-		Log.d("GAMEVIEW","h = "+h+", w = "+w);
+		//Log.d("GAMEVIEW","h = "+h+", w = "+w);
 		//Making a new paint object
 		final Paint paint = new Paint();
 		canvas.drawColor(Color.WHITE); //clear entire canvas to white color
@@ -74,6 +74,8 @@ public class GameView extends View
 				canvas.drawBitmap(enemy.bitmap, enemy.getWidth(), enemy.getHeight(), paint);
 			}
 		}
+
+		this.game.viewGameTimeCounter.setText("Time: " + this.game.getGameTimeCounter());
 
 		//draw the pacman
         canvas.drawBitmap(game.getPacBitmap(), game.getPacx(),game.getPacy(), paint);

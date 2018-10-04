@@ -17,11 +17,11 @@ public class Game
     //context is a reference to the activity
     protected Context context;
     //how many points do we have
-    private int points = 0, numCoins = 10, numEnemies = 5;
+    private int points = 0, numCoins = 10, numEnemies = 5, gameTimeCounter = 0;
     //bitmap of the pacman
     private Bitmap pacBitmap, coinBitmap, emenyBlueBitmap, enemyPinkBitmap, enemyRedBitmap, enemyYellowBitmap;
     //textview reference to points
-    private TextView viewPoints, viewLooser, viewWinner;
+    protected TextView viewPoints, viewLooser, viewWinner, viewGameTimeCounter;
     private int pacx, pacy;
     //the list of goldcoins - initially empty
     private ArrayList<GoldCoin> coins = new ArrayList<>();
@@ -34,14 +34,16 @@ public class Game
     public boolean isRunning;
     private AsyncEnemyMove asyncEnemyMove;
     private AsyncEnemyDirection asyncEnemyDirection;
+    private AsyncGameTimeCounter asyncGameTimeCounter;
 
     //constructor
-    public Game(Context context, TextView viewPoints, TextView viewLooser, TextView viewWinner)
+    public Game(Context context, TextView viewPoints, TextView viewLooser, TextView viewWinner, TextView viewGameTimeCounter)
     {
         this.context = context;
         this.viewPoints = viewPoints;
         this.viewLooser = viewLooser;
         this.viewWinner = viewWinner;
+        this.viewGameTimeCounter = viewGameTimeCounter;
 
         pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
         coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.euro);
@@ -91,9 +93,11 @@ public class Game
         this.pacy = 400; //just some starting coordinates
         //reset the points
         this.points = 0;
+        this.gameTimeCounter = 0;
 
+        this.viewLooser.setText(context.getResources().getString(R.string.gameTimeCounter) + " " + this.viewGameTimeCounter);
         this.viewLooser.setVisibility(View.INVISIBLE);
-        this.viewPoints.setText(context.getResources().getString(R.string.points) + " " + points);
+        this.viewPoints.setText(context.getResources().getString(R.string.points) + " " + this.points);
         this.viewWinner.setVisibility(View.INVISIBLE);
 
         this.isRunning = true;
@@ -103,6 +107,9 @@ public class Game
 
         asyncEnemyMove = new AsyncEnemyMove();
         asyncEnemyMove.execute(this);
+
+        asyncGameTimeCounter = new AsyncGameTimeCounter();
+        asyncGameTimeCounter.execute(this);
 
         this.gameView.invalidate(); //redraw screen
     }
@@ -114,6 +121,7 @@ public class Game
             this.isRunning = !stop;
             this.asyncEnemyMove.cancel(stop);
             this.asyncEnemyDirection.cancel(stop);
+            this.asyncGameTimeCounter.cancel(stop);
         }
     }
 
@@ -230,7 +238,7 @@ public class Game
                 {
                     coins.get(idx).taken();
                     this.points = this.points + 1;
-                    this.viewPoints.setText("Points: " + this.points);
+                    this.viewPoints.setText(context.getResources().getString(R.string.points) + " " + this.points);
                     if(isEveryCoinSelected())
                     {
                         stopGame(true);
@@ -346,5 +354,15 @@ public class Game
                 }
             }
         }
+    }
+
+    public void setGameTimeCounter(int counter)
+    {
+        this.gameTimeCounter = counter;
+    }
+
+    public int getGameTimeCounter()
+    {
+        return this.gameTimeCounter;
     }
 }
