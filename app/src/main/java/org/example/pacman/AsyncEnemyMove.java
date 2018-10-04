@@ -20,8 +20,8 @@ class AsyncEnemyMove extends AsyncTask<Game, Void, Boolean>
      * @see #onPostExecute
      * @see #publishProgress
      */
-    private Game game;
-    private Timer timer;
+    private Game game = null;
+    private Timer timer = null;
 
     protected void onPreExecute()
     {
@@ -30,9 +30,8 @@ class AsyncEnemyMove extends AsyncTask<Game, Void, Boolean>
 
     protected Boolean doInBackground(Game... games)
     {
-        game = games[0];
-
-        timer.schedule(new TimerTask() {
+        this.game = games[0];
+        this.timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 onProgressUpdate();
@@ -43,11 +42,12 @@ class AsyncEnemyMove extends AsyncTask<Game, Void, Boolean>
 
     protected void onProgressUpdate()
     {
-        game.MoveEnemies();
-        game.invalidateGameView();
-        game.isPacmanKilled();
-        if(isCancelled()) {
-            timer.cancel();
+        this.game.MoveEnemies();
+        this.game.invalidateGameView();
+        this.game.isPacmanKilled();
+        if(isCancelled())
+        {
+            this.timer.cancel();
         }
     }
 

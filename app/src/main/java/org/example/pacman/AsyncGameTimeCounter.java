@@ -7,20 +7,20 @@ import java.util.TimerTask;
 
 class AsyncGameTimeCounter extends AsyncTask<Game, Void, Void> {
 
-    private Game game;
-    private Timer timer;
+    private Game game = null;
+    private Timer timer = null;
     private int counter = 0;
 
     protected void onPreExecute()
     {
-        timer = new Timer();
+        this.timer = new Timer();
     }
 
     @Override
     protected Void doInBackground(Game... games) {
 
         this.game = games[0];
-        timer.scheduleAtFixedRate(new TimerTask() {
+        this.timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run()
             {
@@ -35,7 +35,7 @@ class AsyncGameTimeCounter extends AsyncTask<Game, Void, Void> {
         this.counter++;
         this.game.setGameTimeCounter(this.counter);
         if(isCancelled()) {
-            timer.cancel();
+            this.timer.cancel();
         }
     }
 

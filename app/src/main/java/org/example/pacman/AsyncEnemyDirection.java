@@ -21,35 +21,34 @@ class AsyncEnemyDirection extends AsyncTask<Game, Void, Boolean>
      * @see #onPostExecute
      * @see #publishProgress
      */
-    private Game game;
-    private Timer timer;
+    private Game game = null;
+    private Timer timer = null;
 
     protected void onPreExecute()
     {
         // TODO: 03/10/2018
-        timer = new Timer();
+        this.timer = new Timer();
     }
 
     protected Boolean doInBackground(Game... games)
     {
-        game = games[0];
-
-       timer.schedule(new TimerTask() {
-           @Override
-           public void run() {
-               onProgressUpdate();
-           }
-       }, 0, 1000);
+        this.game = games[0];
+        this.timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                onProgressUpdate();
+            }
+        }, 0, 1000);
 
         return true;
     }
 
     protected void onProgressUpdate()
     {
-        game.DirectEnemies();
+        this.game.DirectEnemies();
         if(isCancelled())
         {
-            timer.cancel();
+            this.timer.cancel();
         }
     }
 
