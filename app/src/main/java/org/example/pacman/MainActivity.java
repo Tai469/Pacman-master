@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -115,13 +117,19 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            //Toast.makeText(this,"settings clicked",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Settings clicked",Toast.LENGTH_LONG).show();
             return true;
         }
         else if (id == R.id.action_newGame)
         {
-            //Toast.makeText(this,"New Game clicked",Toast.LENGTH_LONG).show();
-            game.newGame();
+            Toast.makeText(this,"Game started.", Toast.LENGTH_LONG).show();
+            this.game.newGame();
+            return true;
+        }
+        else if(id == R.id.action_stopGame)
+        {
+            Toast.makeText(this,"Game stopped.", Toast.LENGTH_LONG).show();
+            this.game.stopGame(true);
             return true;
         }
         return super.onOptionsItemSelected(item);
