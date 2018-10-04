@@ -22,6 +22,22 @@
 
     </org.example.pacman.GameView>
 
+    <TextView
+        android:id="@+id/Winner"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="You are a Winner !!!"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/Looser"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="You Loose !!!"
+        android:visibility="invisible"/>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"

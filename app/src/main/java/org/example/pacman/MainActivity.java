@@ -29,9 +29,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         setContentView(R.layout.activity_main);
 
         this.gameView =  findViewById(R.id.gameView);
-        final TextView textView = findViewById(R.id.points);
+        final TextView viewPoints = findViewById(R.id.points);
+        final TextView viewLooser = findViewById(R.id.Looser);
+        final TextView viewWinner = findViewById(R.id.Winner);
 
-        this.game = new Game(this,textView);
+        this.game = new Game(this, viewPoints, viewLooser, viewWinner);
         this.game.setGameView(gameView);
         this.gameView.setGame(game);
         this.game.newGame();

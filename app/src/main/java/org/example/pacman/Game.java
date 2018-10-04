@@ -3,10 +3,10 @@ package org.example.pacman;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
-
 /**
  *
  * This class should contain all your game logic
@@ -15,13 +15,13 @@ import java.util.Random;
 public class Game
 {
     //context is a reference to the activity
-    private Context context;
+    protected Context context;
     //how many points do we have
     private int points = 0, numCoins = 10, numEnemies = 5;
     //bitmap of the pacman
     private Bitmap pacBitmap, coinBitmap, emenyBlueBitmap, enemyPinkBitmap, enemyRedBitmap, enemyYellowBitmap;
     //textview reference to points
-    private TextView pointsView;
+    private TextView viewPoints, viewLooser, viewWinner;
     private int pacx, pacy;
     //the list of goldcoins - initially empty
     private ArrayList<GoldCoin> coins = new ArrayList<>();
@@ -30,14 +30,18 @@ public class Game
     private GameView gameView;
     //height and width of screen
     private int h,w;
-    //is the game running?
+
     public boolean isRunning;
+    private AsyncEnemyMove asyncEnemyMove;
+    private AsyncEnemyDirection asyncEnemyDirection;
 
     //constructor
-    public Game(Context context, TextView view)
+    public Game(Context context, TextView viewPoints, TextView viewLooser, TextView viewWinner)
     {
         this.context = context;
-        this.pointsView = view;
+        this.viewPoints = viewPoints;
+        this.viewLooser = viewLooser;
+        this.viewWinner = viewWinner;
 
         pacBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
         coinBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.euro);
@@ -87,12 +91,35 @@ public class Game
         this.pacy = 400; //just some starting coordinates
         //reset the points
         this.points = 0;
-        this.pointsView.setText(context.getResources().getString(R.string.points) + " " + points);
-        //this.gameView.invalidate(); //redraw screen
+
+        this.viewLooser.setVisibility(View.INVISIBLE);
+        this.viewPoints.setText(context.getResources().getString(R.string.points) + " " + points);
+        this.viewWinner.setVisibility(View.INVISIBLE);
 
         this.isRunning = true;
-        new AsyncMoveEnemies().execute(this);
+
+        asyncEnemyDirection = new AsyncEnemyDirection();
+        asyncEnemyDirection.execute(this);
+
+        asyncEnemyMove = new AsyncEnemyMove();
+        asyncEnemyMove.execute(this);
+
         this.gameView.invalidate(); //redraw screen
+    }
+
+    public void stopGame(boolean stop)
+    {
+        if(stop)
+        {
+            this.isRunning = !stop;
+            this.asyncEnemyMove.cancel(stop);
+            this.asyncEnemyDirection.cancel(stop);
+        }
+    }
+
+    public void invalidateGameView()
+    {
+        this.gameView.invalidate();
     }
 
     public void setSize(int h, int w)
@@ -177,8 +204,6 @@ public class Game
                     break;
             }
         }
-        this.gameView.invalidate();
-        this.isKilled();
     }
 
     public void DirectEnemies()
@@ -205,10 +230,10 @@ public class Game
                 {
                     coins.get(idx).taken();
                     this.points = this.points + 1;
-                    this.pointsView.setText("Points: " + this.points);
+                    this.viewPoints.setText("Points: " + this.points);
                     if(isEveryCoinSelected())
                     {
-                        this.isRunning = false;
+                        stopGame(true);
                     }
                     return;
                 }
@@ -301,7 +326,7 @@ public class Game
         return new Enemy(h, w, bitmap);
     }
 
-    public void isKilled()
+    public void isPacmanKilled()
     {
         double x1 = pacx;
         double y1 = pacy;
@@ -317,8 +342,7 @@ public class Game
                 double distance = Math.hypot(x1 - x2, y1 - y2);
                 if(distance < 50)
                 {
-                    isRunning = false;
-                    return;
+                    stopGame(true);
                 }
             }
         }

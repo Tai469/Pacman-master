@@ -1,14 +1,12 @@
 package org.example.pacman;
 
 import android.content.Context;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-
 
 import java.util.ArrayList;
 
@@ -81,5 +79,4 @@ public class GameView extends View
         canvas.drawBitmap(game.getPacBitmap(), game.getPacx(),game.getPacy(), paint);
 		super.onDraw(canvas);
 	}
-
 }
